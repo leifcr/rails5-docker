@@ -232,6 +232,7 @@ GEM
     paper_trail (7.0.2)
       activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
+    pg (0.20.0)
     premailer (1.10.4)
       addressable
       css_parser (>= 1.4.10)
@@ -401,6 +402,7 @@ DEPENDENCIES
   omniauth
   omniauth-google-oauth2
   paper_trail
+  pg
   premailer-rails
   pry-rails
   pry-toys
