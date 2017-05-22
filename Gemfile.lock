@@ -367,8 +367,6 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    wicked_pdf (1.1.0)
-    wkhtmltopdf-binary-edge (0.12.4.0)
 
 PLATFORMS
   ruby
@@ -426,8 +424,6 @@ DEPENDENCIES
   valid_email2
   web-console (>= 3.3.0)
   webpacker
-  wicked_pdf
-  wkhtmltopdf-binary-edge
 
 BUNDLED WITH
    1.14.6

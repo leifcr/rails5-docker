@@ -80,9 +80,9 @@ gem 'sidekiq'
 # gem 'delayed_job'
 # gem 'delayed_job_active_record'
 
-gem 'wicked_pdf'
+# gem 'wicked_pdf'
 # 0.12 version for all platforms
-gem 'wkhtmltopdf-binary-edge'
+# gem 'wkhtmltopdf-binary-edge'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
