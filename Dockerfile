@@ -1,14 +1,22 @@
 FROM ruby:2.4
 MAINTAINER leifcr@gmail.com
 
-RUN apt-get update -qq && apt-get install -y \
+# Add https transport to apt
+RUN apt-get update -qq && apt-get install -y apt-transport-https
+
+# Install updated nodejs, yarn and build packages
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+  && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update -qq && apt-get install -y \
   build-essential \
   libmysqlclient-dev \
   libxml2-dev \
   libxslt1-dev \
   mysql-client \
   wget \
-  nodejs
+  nodejs \
+  yarn
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
 ENV APP_HOME /app
@@ -60,7 +68,7 @@ USER rails
 WORKDIR $APP_HOME
 
 # Add Gemfile
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
 RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
 # Disable skylight dev warning
