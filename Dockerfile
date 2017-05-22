@@ -62,7 +62,7 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock ./
 # Install gems
-RUN gem install bundler && bundle install --jobs 20 --retry 5
+RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
 # Disable skylight dev warning
 RUN skylight disable_dev_warning
 
