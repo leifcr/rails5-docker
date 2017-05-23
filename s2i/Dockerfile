@@ -63,8 +63,8 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # And backwards compatible entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
 
-# Continue as rails user
-USER 1010
+# Continue as rails user - this should be done in end-app-image
+# USER 1010
 
 # Set workdir to /app, so COPY, ADD, RUN and ENTRYPOINT is run within folder
 WORKDIR $APP_HOME
