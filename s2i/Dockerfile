@@ -26,7 +26,7 @@ ENV APP_HOME /app
 ENV LANG C.UTF-8
 
 # Phantomjs installation
-ENV PHANTOMJS_VERSION 2.1.1
+# ENV PHANTOMJS_VERSION 2.1.1
 # Bitbucket dl (usually has issues)
 # Install phantomjs for testing purposes (only used on guard), but easier to add to docker base image
 # Install official PhantomJS release
@@ -38,20 +38,21 @@ ENV PHANTOMJS_VERSION 2.1.1
 #  && mv /tmp/phantomjs/bin/phantomjs /usr/local/bin
 
 # Github dl as alternative
-RUN set -x  \
- && mkdir /tmp/phantomjs \
- && cd /tmp/phantomjs \
- && wget -nv https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O - \
-   | tar -xj --strip-components=1 -C /tmp/phantomjs \
- && mv /tmp/phantomjs/bin/phantomjs /usr/local/bin
-
+# ENV PHANTOMJS_VERSION 2.1.1
+# RUN set -x  \
+#  && mkdir /tmp/phantomjs \
+#  && cd /tmp/phantomjs \
+#  && wget -nv https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O - \
+#    | tar -xj --strip-components=1 -C /tmp/phantomjs \
+#  && mv /tmp/phantomjs/bin/phantomjs /usr/local/bin
+#
 # Create application folder and ssh-agent folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app and ssh-agent folder
 RUN mkdir $APP_HOME && \
     mkdir /ssh-agent && \
     groupadd -g 1010 rails && \
-    useradd -s -u 1010 /bin/bash -m -d /home/rails -g rails rails && \
+    useradd --uid 1010 -s /bin/bash -m -d /home/rails -g 1010 rails && \
     chown 1010:0 /app && \
     chown 1010:0 /ssh-agent
 
