@@ -46,18 +46,16 @@ ENV LANG C.UTF-8
 #    | tar -xj --strip-components=1 -C /tmp/phantomjs \
 #  && mv /tmp/phantomjs/bin/phantomjs /usr/local/bin
 #
-# Create application folder and ssh-agent folder
+# Create application folder
 # Setup rails user group and rails user
-# Set rails:rails as user on app and ssh-agent folder
+# Set rails:rails as user on app folder
 RUN mkdir $APP_HOME && \
-    mkdir /ssh-agent && \
     groupadd -g 1010 rails && \
     useradd --uid 1010 -s /bin/bash -m -d /home/rails -g 1010 rails && \
-    chown 1010:0 /app && \
-    chown 1010:0 /ssh-agent
+    chown 1010:0 $APP_HOME
 
 # Copy docker entry point
-COPY docker-entrypoint.sh /usr/local/bin/
+# COPY docker-entrypoint.sh /usr/local/bin/
 
 # Make entrypoint executable when building on Windows
 # And backwards compatible entrypoint
@@ -70,11 +68,11 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-
 WORKDIR $APP_HOME
 
 # Add Gemfile
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+ONBUILD COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
-RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
+ONBUILD RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
 # Disable skylight dev warning
-RUN skylight disable_dev_warning
+ONBUILD RUN skylight disable_dev_warning
 
 # Set entry point to bundle exec, as all cmd's with rails should be prepended
-ENTRYPOINT ["docker-entrypoint.sh"]
+# ENTRYPOINT ["docker-entrypoint.sh"]
