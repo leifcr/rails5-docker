@@ -59,7 +59,7 @@ RUN mkdir $APP_HOME && \
 
 # Make entrypoint executable when building on Windows
 # And backwards compatible entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
+# RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
 
 # Continue as rails user - this should be done in end-app-image
 # USER 1010
