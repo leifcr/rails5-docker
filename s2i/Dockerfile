@@ -70,7 +70,7 @@ WORKDIR $APP_HOME
 # Add Gemfile
 ONBUILD COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
-ONBUILD RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
+ONBUILD RUN gem install bundler && bundle install --jobs 20 --retry 5 --deployment --without development:test && yarn install
 # Disable skylight dev warning
 ONBUILD RUN skylight disable_dev_warning
 
