@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cat <<EOF
+This is a S2I ruby-2.4 (Debian derived) base image:
+To use it, install S2I: https://github.com/openshift/source-to-image
+
+Then run
+s2i build git-path-to-app leifcr/rails5:latest-s2i
+or
+s2i build . leifcr/rails5:latest-s2i
+EOF

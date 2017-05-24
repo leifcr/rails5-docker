@@ -1,50 +1,97 @@
 FROM ruby:2.4
-MAINTAINER leifcr@gmail.com
+
+LABEL maintainer leifcr@gmail.com
+      # Location of the STI scripts inside the image.
+LABEL io.openshift.s2i.scripts-url=image:///usr/local/bin/s2i \
+      # DEPRECATED: This label will be kept here for backward compatibility.
+      io.s2i.scripts-url=image:///usr/local/bin/s2i \
+      summary="Platform for building and running Rails 5 with Ruby 2.4 including extra packages" \
+      io.k8s.description="Platform for building and running Rails 5 with Ruby 2.4 including extra packages" \
+      io.k8s.display-name="Ruby 2.4 (Rails 5)" \
+      io.openshift.expose-services="8080:http" \
+      io.openshift.tags="builder,ruby,ruby24,rails5,rails"
+
+# The $HOME is not set by default, but some applications needs this variable
+ENV APP_HOME=/app \
+    HOME=/app \
+    STI_SCRIPTS_PATH=/usr/local/bin/s2i \
+    RUBY_VERSION=2.4 \
+    LANG=C.UTF-8 \
+    RAILS_ENV=production
+
+# ENV PATH=/app/bin:$PATH
 
 # Add https transport to apt
-RUN apt-get update -qq && apt-get install -y apt-transport-https
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
+    && apt-get update -qq && apt-get install -y apt-transport-https apt-utils
+
+# For staging and production env, duck-cli must be installed to be able to download refile assets
 
 # Install updated nodejs, yarn and build packages
-RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+# RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
+  && echo "deb https://deb.nodesource.com/node_7.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
+  && echo "deb-src https://deb.nodesource.com/node_7.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update -qq && apt-get install -y \
   build-essential \
-  libpq-dev \
-  libmysqlclient-dev \
-  libxml2-dev \
   libxslt1-dev \
+  libxml2-dev \
+  libmysqlclient-dev \
   mysql-client \
+  libpq-dev \
+  postgresql-client \
   wget \
   nodejs \
+  tar \
+  unzip \
+  # duck \
+  lsb-release \
   yarn
 
-# For staging and production env, duck-cli must be installed to be able to download refile assets
-ENV APP_HOME /app
+# Cannot install duck, as it requires root on install
+# See: https://trac.cyberduck.io/browser/trunk/setup/deb/duck.postinstall (need to submit ticket)
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FE7097963FEFBE72 \
+#     && echo "deb https://s3.amazonaws.com/repo.deb.cyberduck.io stable main" | tee /etc/apt/sources.list.d/duck.list \
+#     && apt-get update -qq && apt-get install -y duck
 
-# If encoding errors occur, adjust locale.
-ENV LANG C.UTF-8
+# RUN apt-get install -y  libxslt1-dev
+# RUN apt-get install -y  libxml2-dev
+# RUN apt-get install -y  libmysqlclient-dev
+# RUN apt-get install -y  mysql-client
+# RUN apt-get install -y  libpq-dev
+# RUN apt-get install -y  postgresql-client
+# RUN apt-get install -y  wget
+# RUN apt-get install -y  nodejs
+# RUN apt-get install -y  tar
+# RUN apt-get install -y  unzip
+# RUN apt-get install -y  duck
+# RUN apt-get install -y  lsb-release
+# RUN apt-get install -y  yarn
+
+# libmariadbd-dev \
 
 # Create application folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app folder
 RUN mkdir $APP_HOME && \
     groupadd -g 1010 rails && \
-    useradd --uid 1010 -s /bin/bash -m -d /home/rails -g 1010 rails && \
+    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 rails && \
     chown 1010:0 $APP_HOME && \
-    mkdir -p /home/rails/.ssh/ && \
-    touch /home/rails/.ssh/known_hosts && \
-    ssh-keyscan bitbucket.org >> /home/rails/.ssh/known_hosts && \
-    ssh-keyscan github.org >> /home/rails/.ssh/known_hosts
+    mkdir -p $APP_HOME/.ssh/ && \
+    touch $APP_HOME/.ssh/known_hosts && \
+    ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts && \
+    ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts
 
-COPY rails/* /usr/local/bin/
+# COPY rails/* /usr/local/bin/
 
 # Make entrypoint executable when building on Windows
 # And backwards compatible entrypoint
-RUN chmod +x /usr/local/bin/start.sh \
-  && ln -s /usr/local/bin/start.sh /start.sh \
-  && chmod +x /usr/local/bin/migrate-database.sh \
-  && ln -s /usr/local/bin/migrate-database.sh /migrate-database.sh
+# RUN chmod +x /usr/local/bin/start.sh \
+#   && ln -s /usr/local/bin/start.sh /start.sh \
+#   && chmod +x /usr/local/bin/migrate-database.sh \
+#   && ln -s /usr/local/bin/migrate-database.sh /migrate-database.sh
 
 # Copy docker entry point
 # COPY docker-entrypoint.sh /usr/local/bin/
@@ -53,23 +100,34 @@ RUN chmod +x /usr/local/bin/start.sh \
 # And backwards compatible entrypoint
 # RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
 
-# Continue as rails user - this should be done in end-app-image
+# Copy contrib
+COPY ./contrib/ $APP_HOME
+
+# Copy bin
+COPY bin/ /usr/local/bin/
+COPY s2i/bin $STI_SCRIPTS_PATH
+
+EXPOSE 8080
+
+# Continue as rails user
 USER 1010
 
 # Set workdir to /app, so COPY, ADD, RUN and ENTRYPOINT is run within folder
 WORKDIR $APP_HOME
 
-ENV RAILS_ENV production
-
 # Copy app
-ONBUILD COPY . ./
+# COPY . ./
 # Install gems
-ONBUILD RUN gem install bundler && bundle install --jobs 20 --retry 5 --without development:test && yarn install
+# RUN gem install bundler && bundle install --jobs 20 --retry 5 --without development:test && yarn install
 # Disable skylight dev warning
-ONBUILD RUN skylight disable_dev_warning
+# RUN skylight disable_dev_warning
 # Precompile assets
-ONBUILD RUN rails assets:precompile
+# RUN rails assets:precompile
+
+ENTRYPOINT ["container-entrypoint"]
+# CMD ["usage"]
+CMD ["$STI_SCRIPTS_PATH/usage"]
 
 # Set entry point to bundle exec, as all cmd's with rails should be prepended
-ENTRYPOINT ["start.sh"]
-CMD ["rails", "server"]
+# ENTRYPOINT ["start.sh"]
+# CMD ["rails", "server"]

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+function is_puma_installed() {
+  [ ! -f Gemfile.lock ] && return 1
+  grep ' puma ' Gemfile.lock >/dev/null
+}
+
+function is_foreman_installed() {
+  [ ! -f Gemfile.lock ] && return 1
+  [ ! -f Procfile ] && return 1
+  grep ' foreman ' Gemfile.lock >/dev/null
+}
+
+set -e
+
+function check_number() {
+  if [[ ! "$2" =~ ^[0-9]+$ ]]; then
+    echo "$1 needs to be a non-negative number"
+    exit 1
+  fi
+}
+
+function migrate_database() {
+  set +e
+  echo
+  echo "== Migrating database"
+  echo
+  bundle exec rails db:migrate
+
+  if [[ $? != 0 ]]; then
+    echo
+    echo "== Failed to migrate. Running setup first."
+    echo
+    set -e
+    bundle exec rails db:setup && bundle exec rails db:migrate
+  fi
+}
+
+check_number PUMA_WORKERS     "${PUMA_WORKERS:-1}"
+check_number PUMA_MIN_THREADS "${PUMA_MIN_THREADS:-1}"
+check_number PUMA_MAX_THREADS "${PUMA_MAX_THREADS:-10}"
+
+# Migrate or setup db
+migrate_database
+
+# export RACK_ENV=${RACK_ENV:-"production"}
+export_vars=$(cgroup-limits) ; export $export_vars
+
+if is_foreman_installed; then
+  exec bundle exec foreman
+elif is_puma_installed; then
+  exec bundle exec "puma --config /app/etc/puma.cfg"
+else
+  echo "No puma or foreman... nothing to do?"
+fi
