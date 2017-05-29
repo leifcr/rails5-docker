@@ -46,6 +46,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   nodejs \
   tar \
   unzip \
+  rsync \
   # duck \
   lsb-release \
   yarn

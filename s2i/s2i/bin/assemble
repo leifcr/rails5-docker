@@ -6,7 +6,11 @@ set -e
 
 shopt -s dotglob
 echo "---> Installing application source ..."
-mv -f /tmp/src/* ./
+# Must use rsync instead of mv, since mv cannot mv to folder with existing data
+rsync -a /tmp/src/ ./
+# Them remove tmp src
+rm -rf /tmp/src
+# mv -f /tmp/src/* ./
 
 echo "---> Installing gems ..."
 if [ -f Gemfile ]; then
