@@ -117,12 +117,11 @@ WORKDIR $APP_HOME
 
 # Copy app
 # COPY . ./
+# Install gems (Base gems used for most apps to save deployment time)
+# Add Gemfile
+COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
-# RUN gem install bundler && bundle install --jobs 20 --retry 5 --without development:test && yarn install
-# Disable skylight dev warning
-# RUN skylight disable_dev_warning
-# Precompile assets
-# RUN rails assets:precompile
+RUN gem install bundler && bundle install --deployment --without development:test --jobs 20 --retry 5 && yarn install
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
