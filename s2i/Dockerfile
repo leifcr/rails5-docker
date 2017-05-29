@@ -11,6 +11,8 @@ LABEL io.openshift.s2i.scripts-url=image:///usr/local/bin/s2i \
       io.openshift.expose-services="8080:http" \
       io.openshift.tags="builder,ruby,ruby24,rails5,rails"
 
+EXPOSE 8080
+
 # The $HOME is not set by default, but some applications needs this variable
 ENV APP_HOME=/app \
     HOME=/app \
@@ -78,12 +80,18 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 # Set rails:rails as user on app folder
 RUN mkdir $APP_HOME && \
     groupadd -g 1010 rails && \
-    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 rails && \
+    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 -G root rails && \
     chown 1010:0 $APP_HOME && \
+    chmod 775 $APP_HOME && \
+    chmod g+s $APP_HOME && \
     mkdir -p $APP_HOME/.ssh/ && \
+    chmod 700 $APP_HOME/.ssh && \
     touch $APP_HOME/.ssh/known_hosts && \
     ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts && \
-    ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts
+    ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts && \
+    chown -R 1010:0 /usr/local/bundle && \
+    chmod 775 /usr/local/bundle && \
+    chmod g+s /usr/local/bundle
 
 # COPY rails/* /usr/local/bin/
 
@@ -108,11 +116,6 @@ COPY ./contrib/ $APP_HOME
 COPY bin/ /usr/local/bin/
 COPY s2i/bin $STI_SCRIPTS_PATH
 
-EXPOSE 8080
-
-# Continue as rails user
-USER 1010
-
 # Set workdir to /app, so COPY, ADD, RUN and ENTRYPOINT is run within folder
 WORKDIR $APP_HOME
 
@@ -121,8 +124,19 @@ WORKDIR $APP_HOME
 # Install gems (Base gems used for most apps to save deployment time)
 # Add Gemfile
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
+
+RUN chown -R 1010:0 $APP_HOME && \
+    chown -R 1010:0 /usr/local/bundle && \
+    /usr/local/bin/fix-permissions /usr/local/bundle && \
+    /usr/local/bin/fix-permissions $APP_HOME
+
+# Continue as rails user
+USER 1010
+
 # Install gems
-RUN gem install bundler && bundle install --deployment --without development:test --jobs 20 --retry 5 && yarn install
+RUN gem install bundler && \
+    bundle install --deployment --without development:test --jobs 20 --retry 5 && \
+    yarn install
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
