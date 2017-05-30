@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cat <<EOF
+This image is for using rails + passenger + nginx or other passenger + nginx apps...
+
+To use this image as a base image, you need to have 's2i/bin' directory in the
+same directory as your S2I image Dockerfile. This directory should contain S2I
+scripts.
+
+To learn more about S2I visit: https://github.com/openshift/source-to-image
+EOF

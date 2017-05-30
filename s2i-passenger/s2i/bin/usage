@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cat <<EOF
+This is a S2I passenger ruby-2.4 base image:
+To use it, install S2I: https://github.com/openshift/source-to-image
+
+Then run
+s2i build git-path-to-app leifcr/rails5:latest-passenger-s2i
+or locally after cloning repo:
+s2i build . leifcr/rails5:latest-passenger-s2i
+EOF
