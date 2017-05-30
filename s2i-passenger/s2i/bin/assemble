@@ -8,7 +8,7 @@ shopt -s dotglob
 
 if [ -d /tmp/src/config/nginx ]; then
   echo "---> Installing nginx conf files"
-  rsync -a /tmp/src/config/nginx /etc/nginx
+  rsync -a /tmp/src/config/nginx/ /etc/nginx
 fi
 
 echo "---> Installing application source ..."

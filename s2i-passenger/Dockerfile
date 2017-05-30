@@ -61,6 +61,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 COPY bin/ /usr/local/bin/
 COPY s2i/bin $STI_SCRIPTS_PATH
 
+# Nginx setup
+COPY etc/nginx/sites-enabled/ /etc/nginx/sites-enabled/
+RUN rm -f /etc/service/nginx/down && rm /etc/nginx/sites-enabled/default
+
 # Install gems (Base gems used for most apps to save deployment time)
 # Add Gemfile
 COPY Gemfile Gemfile.lock package.json yarn.lock $APP_HOME/
