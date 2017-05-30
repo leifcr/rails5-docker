@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/leifcr/capistrano-db-tasks.git
-  revision: 14e9123a7aa180e53bfb57c410a910408b944b8e
-  tag: v0.4.1
-  specs:
-    capistrano-db-tasks (0.4)
-      capistrano (>= 3.0.0)
-
-GIT
   remote: https://github.com/mois3x/sweet-alert-rails-confirm.git
   revision: b2f7e8ab8973fb75c1911ea4d39f588c12b5e909
   specs:
@@ -54,8 +46,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
-    airbrussh (1.2.0)
-      sshkit (>= 1.6.1, != 1.7.0)
     arel (8.0.0)
     autoprefixer-rails (7.1.1)
       execjs
@@ -65,24 +55,6 @@ GEM
       sass (>= 3.4.19)
     builder (3.2.3)
     byebug (9.0.6)
-    capistrano (3.8.1)
-      airbrussh (>= 1.0.0)
-      i18n
-      rake (>= 10.0.0)
-      sshkit (>= 1.9.0)
-    capistrano-bundler (1.2.0)
-      capistrano (~> 3.1)
-      sshkit (~> 1.2)
-    capistrano-monit_runit (3.1.2)
-      activesupport (>= 4.0)
-      capistrano (~> 3.4)
-    capistrano-pumaio (3.1.4)
-      activesupport (>= 4.0)
-      capistrano (~> 3.4)
-      capistrano-monit_runit (~> 3.1.0)
-    capistrano-rails (1.2.3)
-      capistrano (~> 3.1)
-      capistrano-bundler (~> 1.1)
     carrierwave (1.1.0)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -203,9 +175,6 @@ GEM
     multipart-post (2.0.0)
     mysql2 (0.4.6)
     nenv (0.3.0)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (4.1.0)
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
@@ -232,6 +201,9 @@ GEM
     paper_trail (7.0.2)
       activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
+    passenger (5.1.4)
+      rack
+      rake (>= 0.8.1)
     pg (0.20.0)
     premailer (1.10.4)
       addressable
@@ -249,7 +221,6 @@ GEM
     pry-toys (0.0.2)
       pry
     public_suffix (2.0.5)
-    puma (3.8.2)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
@@ -334,9 +305,6 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
-    sshkit (1.13.1)
-      net-scp (>= 1.1.2)
-      net-ssh (>= 2.8.0)
     temple (0.8.0)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
@@ -375,11 +343,6 @@ PLATFORMS
 DEPENDENCIES
   bootstrap (>= 4.0.0.alpha6)
   byebug
-  capistrano
-  capistrano-db-tasks!
-  capistrano-monit_runit
-  capistrano-pumaio
-  capistrano-rails
   carrierwave
   carrierwave-i18n
   enumerize
@@ -402,11 +365,11 @@ DEPENDENCIES
   omniauth
   omniauth-google-oauth2
   paper_trail
+  passenger (>= 5.1.0)
   pg
   premailer-rails
   pry-rails
   pry-toys
-  puma (~> 3.0)
   rails (~> 5.1.0)
   rails-i18n
   redis (~> 3.0)
