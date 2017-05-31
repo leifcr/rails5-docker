@@ -10,7 +10,7 @@ echo "---> Installing application source ..."
 
 # Must use rsync instead of mv, since mv cannot mv to folder with existing data
 rsync -a /tmp/src/ $APP_HOME
-chown -R app:root $APP_HOME
+chown -R rails:rails $APP_HOME
 
 # Them remove tmp src
 rm -rf /tmp/src

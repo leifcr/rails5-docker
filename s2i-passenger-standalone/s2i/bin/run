@@ -47,12 +47,18 @@ migrate_database
 # export RACK_ENV=${RACK_ENV:-"production"}
 # export_vars=$(cgroup-limits) ; export $export_vars
 
-if is_foreman_installed; then
-  exec bundle exec foreman
-elif is_passenger_installed; then
+# if is_foreman_installed; then
+#   exec bundle exec foreman
+# elif is_passenger_installed; then
+#   echo bundle exec passenger --port 8080
+# # elif is_puma_installed; then
+#   # echo bundle exec puma --port 8080
+# else
+#   echo 'No foreman, no puma and no passenger... nothing to do'
+# fi
+
+if is_passenger_installed; then
   echo bundle exec passenger --port 8080
-# elif is_puma_installed; then
-  # echo bundle exec puma --port 8080
 else
-  echo 'No foreman, no puma and no passenger... nothing to do'
+  echo 'No passenger... nothing to do'
 fi
