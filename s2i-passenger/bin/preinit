@@ -1,2 +1,2 @@
 #!/bin/sh -e
-su -p -c /sbin/my_init
+sudo /sbin/my_init

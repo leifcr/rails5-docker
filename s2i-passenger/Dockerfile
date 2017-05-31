@@ -46,6 +46,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   unzip \
   rsync \
   lsb-release \
+  sudo \
   yarn
 
 # Cannot install duck, as it requires root on install
@@ -56,14 +57,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 # Copy contrib
 # COPY ./contrib/ $APP_HOME
-
-# Copy bin
-COPY bin/ /usr/local/bin/
-COPY s2i/bin $STI_SCRIPTS_PATH
-
-# Nginx setup
-COPY etc/nginx/sites-enabled/ /etc/nginx/sites-enabled/
-RUN rm -f /etc/service/nginx/down && rm /etc/nginx/sites-enabled/default
 
 # Install gems (Base gems used for most apps to save deployment time)
 # Add Gemfile
@@ -76,19 +69,35 @@ WORKDIR $APP_HOME
 USER app
 
 # Install gems
-RUN bundle install --deployment --without development:test --jobs 20 --retry 5 && \
+RUN bundle install --deployment --jobs 20 --retry 5 && \
     yarn install && \
     node --version && \
     ruby --version
 
 WORKDIR /
 USER 0
+
+# Copy bin
+COPY bin/ /usr/local/bin/
+COPY s2i/bin $STI_SCRIPTS_PATH
+
+# Nginx setup
+COPY etc/nginx/sites-enabled/ /etc/nginx/sites-enabled/
+RUN rm -f /etc/service/nginx/down && rm /etc/nginx/sites-enabled/default
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV HOME=/root
+ENV HOME=/home/dockerfu
+# Create special su user
+RUN groupadd wheel && \
+    useradd --uid 9995 -s /bin/bash -m -d /home/dockerfu -g wheel dockerfu -G rvm && \
+    sed -i '/sufficient pam_wheel.so trust/s/^# //g' /etc/pam.d/su && \
+    echo 'dockerfu	ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dockerfu
+
+USER 9995
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
 # CMD ["$STI_SCRIPTS_PATH/usage"]
-USER 0
-CMD ["/sbin/my_init"]
+# CMD ["/sbin/my_init"]
+CMD ["/sbin/preinit"]

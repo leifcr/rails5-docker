@@ -23,4 +23,4 @@ function migrate_database() {
 # Migrate or setup db
 migrate_database
 
-exec /sbin/my_init
+exec /sbin/preinit

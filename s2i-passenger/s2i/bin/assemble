@@ -8,45 +8,46 @@ shopt -s dotglob
 
 if [ -d /tmp/src/config/nginx ]; then
   echo "---> Installing nginx conf files"
-  rsync -a /tmp/src/config/nginx/ /etc/nginx
+  sudo -E rsync -a /tmp/src/config/nginx/ /etc/nginx
 fi
 
 echo "---> Installing application source ..."
 
 # Must use rsync instead of mv, since mv cannot mv to folder with existing data
-rsync -a /tmp/src/ $APP_HOME
-
-chown -R app:root /home/app
+sudo -E rsync -a /tmp/src/ $APP_HOME
+sudo -E chown -R app:root $APP_HOME
 
 # Them remove tmp src
-rm -rf /tmp/src
+sudo -E rm -rf /tmp/src
 # mv -f /tmp/src/* ./
 
 echo "---> Installing gems ..."
 if [ -f $APP_HOME/Gemfile ]; then
   pushd $APP_HOME
-  ADDTL_BUNDLE_ARGS="--deployment --without development:test"
-
+  ADDTL_BUNDLE_ARGS="--deployment"
+  if [[ "$RAILS_ENV" == "production" || "$RACK_ENV" == "production" ]]; then
+    ADDTL_BUNDLE_ARGS="--without development:test"
+  fi
   echo "---> Running 'bundle install ${ADDTL_BUNDLE_ARGS}' ..."
   # bundle install --path ./bundle ${ADDTL_BUNDLE_ARGS}
-  setuser app bundle install ${ADDTL_BUNDLE_ARGS}
+  sudo -E setuser app bundle install ${ADDTL_BUNDLE_ARGS}
 
   echo "---> Cleaning up unused ruby gems ..."
-  setuser app bundle clean -V
+  sudo -E setuser app bundle clean -V
   popd
 fi
 
 if [ -f $APP_HOME/package.json ]; then
   pushd $APP_HOME
   echo "---> Running yarn install"
-  setuser app yarn install
+  sudo -E setuser app yarn install
   popd
 fi
 
 if [[ "$RAILS_ENV" == "production" || "$RACK_ENV" == "production" ]]; then
   pushd $APP_HOME
   echo "---> Starting asset compilation ..."
-  setuser app bundle exec rails assets:precompile
+  sudo -E setuser app bundle exec rails assets:precompile
   popd
 fi
 
@@ -58,6 +59,6 @@ fi
 # The ./db folder has to be writeable as well because when Rails complete the
 # migration it writes the schema version into ./db/schema.db
 set +e
-[[ -d $APP_HOME/tmp ]] && chgrp -R 0 $APP_HOME/tmp && chmod -R g+rw $APP_HOME/tmp
-[[ -d $APP_HOME/db ]] && chgrp -R 0 $APP_HOME/db && chmod -R g+rw $APP_HOME/db
+sudo -E '[[ -d $APP_HOME/tmp ]] && chgrp -R 0 $APP_HOME/tmp && chmod -R g+rw $APP_HOME/tmp'
+sudo -E '[[ -d $APP_HOME/db ]] && chgrp -R 0 $APP_HOME/db && chmod -R g+rw $APP_HOME/db'
 set -e
