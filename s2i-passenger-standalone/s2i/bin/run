@@ -37,7 +37,7 @@ function migrate_database() {
     echo "== Failed to migrate. Running setup first."
     echo
     set -e
-    bundle exec rails db:setup && bundle exec rails db:migrate
+    bundle exec rails db:schema:load && bundle exec rails db:migrate
   fi
 }
 
@@ -58,7 +58,7 @@ migrate_database
 # fi
 
 if is_passenger_installed; then
-  echo bundle exec passenger --port 8080
+  echo bundle exec passenger start --port 8080
 else
   echo 'No passenger... nothing to do'
 fi
