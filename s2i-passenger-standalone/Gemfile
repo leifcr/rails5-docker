@@ -51,20 +51,20 @@ gem 'simple_form', '~> 3.5'
 
 gem 'mini_magick'
 
-gem 'carrierwave'
-gem 'carrierwave-i18n'
+# gem 'carrierwave'
+# gem 'carrierwave-i18n'
 
 # pagination
 gem 'kaminari'
 
 # Inline css for emails, without the hassle:
-gem 'premailer-rails'
+# gem 'premailer-rails'
 
 # For nice tables in text emails
-gem 'terminal-table'
+# gem 'terminal-table'
 
-gem 'foundation_emails'
-gem 'inky-rb', require: 'inky'
+# gem 'foundation_emails'
+# gem 'inky-rb', require: 'inky'
 
 # For validating email addresses
 gem 'valid_email2'

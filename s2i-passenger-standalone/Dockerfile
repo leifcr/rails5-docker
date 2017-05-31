@@ -140,7 +140,7 @@ USER 1010
 
 # Install gems
 RUN gem install bundler && \
-    bundle install --deployment --without development:test --jobs 20 --retry 5 && \
+    bundle install --deployment --jobs 20 --retry 5 && \
     yarn install
 
 ENTRYPOINT ["container-entrypoint"]
