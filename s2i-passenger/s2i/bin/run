@@ -8,14 +8,14 @@ function migrate_database() {
   echo "== Migrating database"
   echo
   pushd $APP_HOME
-  bundle exec rails db:migrate
+  sudo -E setuser app bundle exec rails db:migrate
 
   if [[ $? != 0 ]]; then
     echo
     echo "== Failed to migrate. Running setup first."
     echo
     set -e
-    bundle exec rails db:setup && bundle exec rails db:migrate
+    sudo -E setuser app bundle exec rails db:setup && bundle exec rails db:migrate
   fi
   popd
 }
@@ -23,4 +23,5 @@ function migrate_database() {
 # Migrate or setup db
 migrate_database
 
-exec /sbin/preinit
+exec sudo -E -H /sbin/my_init
+# exec /sbin/preinit

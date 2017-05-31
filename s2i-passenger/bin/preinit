@@ -1,2 +1,2 @@
 #!/bin/sh -e
-sudo /sbin/my_init
+exec sudo -H /sbin/my_init
