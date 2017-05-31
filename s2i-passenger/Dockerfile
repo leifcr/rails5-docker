@@ -90,5 +90,5 @@ ENV HOME=/root
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
 # CMD ["$STI_SCRIPTS_PATH/usage"]
-
+USER 0
 CMD ["/sbin/my_init"]
