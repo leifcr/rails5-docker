@@ -64,19 +64,6 @@ COPY Gemfile Gemfile.lock package.json yarn.lock $APP_HOME/
 
 RUN bash -lc 'rvm --default use ruby-2.4'
 
-# Continue as app user
-WORKDIR $APP_HOME
-USER app
-
-# Install gems
-RUN bundle install --deployment --jobs 20 --retry 5 && \
-    yarn install && \
-    node --version && \
-    ruby --version
-
-WORKDIR /
-USER 0
-
 # Copy bin
 COPY bin/ /usr/local/bin/
 COPY s2i/bin $STI_SCRIPTS_PATH
@@ -93,6 +80,18 @@ RUN groupadd wheel && \
     useradd --uid 1010 -s /bin/bash -m -d /home/dockerfu -g wheel dockerfu -G rvm && \
     sed -i '/sufficient pam_wheel.so trust/s/^# //g' /etc/pam.d/su && \
     echo 'dockerfu	ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dockerfu
+
+# Continue as app user
+WORKDIR $APP_HOME
+# USER 9999
+
+# Install gems
+RUN setuser app bundle install --deployment --jobs 20 --retry 5 && \
+    setuser app yarn install && \
+    setuser app node --version && \
+    setuser app ruby --version
+
+WORKDIR /
 
 USER 1010
 
