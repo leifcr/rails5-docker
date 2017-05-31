@@ -90,11 +90,11 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ENV HOME=/home/dockerfu
 # Create special su user
 RUN groupadd wheel && \
-    useradd --uid 9995 -s /bin/bash -m -d /home/dockerfu -g wheel dockerfu -G rvm && \
+    useradd --uid 1010 -s /bin/bash -m -d /home/dockerfu -g wheel dockerfu -G rvm && \
     sed -i '/sufficient pam_wheel.so trust/s/^# //g' /etc/pam.d/su && \
     echo 'dockerfu	ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dockerfu
 
-USER 9995
+USER 1010
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
