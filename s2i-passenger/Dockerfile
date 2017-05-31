@@ -83,7 +83,6 @@ RUN groupadd wheel && \
 
 # Continue as app user
 WORKDIR $APP_HOME
-# USER 9999
 
 # Install gems
 RUN setuser app bundle install --deployment --jobs 20 --retry 5 && \
