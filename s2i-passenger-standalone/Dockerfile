@@ -83,8 +83,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 # Create application folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app folder
-RUN mkdir $APP_HOME && \
-    groupadd -g 1010 rails && \
+RUN groupadd -g 1010 rails && \
     useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 -G root rails && \
     chown 1010:0 $APP_HOME && \
     chmod 775 $APP_HOME && \
@@ -133,7 +132,8 @@ COPY Gemfile Gemfile.lock package.json yarn.lock ./
 RUN chown -R 1010:0 $APP_HOME && \
     chown -R 1010:0 /usr/local/bundle && \
     /usr/local/bin/fix-permissions /usr/local/bundle && \
-    /usr/local/bin/fix-permissions $APP_HOME
+    /usr/local/bin/fix-permissions $APP_HOME && \
+    chmod 700 $APP_HOME/.ssh
 
 # Continue as rails user
 USER 1010

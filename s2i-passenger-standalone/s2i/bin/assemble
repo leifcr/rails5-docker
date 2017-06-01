@@ -48,6 +48,7 @@ fi
 
 # Fix source directory permissions
 # fix-permissions ./
+/usr/local/bin/fix-permissions $APP_HOME
 
 # Make the ./tmp folder world writeable as Rails or other frameworks might use
 # it to store temporary data (uploads/cache/sessions/etcd).
