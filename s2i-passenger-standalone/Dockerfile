@@ -52,7 +52,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   rsync \
   # duck \
   lsb-release \
-  nss-wrapper \
+  libnss-wrapper \
   yarn
 
 # For passenger:
