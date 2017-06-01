@@ -19,7 +19,8 @@ ENV APP_HOME=/app \
     STI_SCRIPTS_PATH=/usr/local/bin/s2i \
     RUBY_VERSION=2.4 \
     LANG=C.UTF-8 \
-    RAILS_ENV=production
+    RAILS_ENV=production \
+    APP_USER=rails
 
 # ENV PATH=/app/bin:$PATH
 
@@ -51,6 +52,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   rsync \
   # duck \
   lsb-release \
+  nss-wrapper \
   yarn
 
 # For passenger:
@@ -83,8 +85,8 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 # Create application folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app folder
-RUN groupadd -g 1010 rails && \
-    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 -G root rails && \
+RUN groupadd -g 1010 $APP_USER && \
+    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 -G root $APP_USER && \
     chown 1010:0 $APP_HOME && \
     chmod 775 $APP_HOME && \
     chmod g+s $APP_HOME && \
