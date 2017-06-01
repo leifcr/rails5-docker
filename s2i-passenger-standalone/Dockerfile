@@ -30,6 +30,10 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
 
+# Install nss-wrapper from unstable.
+COPY apt/unstable.pref /etc/apt/preferences.d/unstable.pref
+COPY apt/unstable.list /etc/apt/sources.list.d/unstable.list
+
 # Install updated nodejs, yarn and build packages
 # RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
@@ -37,7 +41,9 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   && echo "deb-src https://deb.nodesource.com/node_7.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-  && apt-get update -qq && apt-get install -y \
+  && apt-get update -qq \
+  && apt-get install -y -t unstable libnss-wrapper \
+  && apt-get install -y \
   build-essential \
   libxslt1-dev \
   libxml2-dev \
@@ -52,7 +58,6 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   rsync \
   # duck \
   lsb-release \
-  libnss-wrapper \
   yarn
 
 # For passenger:
