@@ -25,24 +25,21 @@ set -e
 #   fi
 # }
 
-function migrate_database() {
-  set +e
-  echo
-  echo "== Migrating database"
-  echo
-  bundle exec rails db:migrate
-
-  if [[ $? != 0 ]]; then
-    echo
-    echo "== Failed to migrate. Running setup first."
-    echo
-    set -e
-    bundle exec rails db:schema:load && bundle exec rails db:migrate
-  fi
-}
-
 # Migrate or setup db
-migrate_database
+
+set +e
+echo
+echo "== Migrating database"
+echo
+bundle exec rails db:migrate
+
+if [[ $? != 0 ]]; then
+  echo
+  echo "== Failed to migrate. Running setup first."
+  echo
+  set -e
+  bundle exec rails db:create && bundle exec rails db:migrate
+fi
 
 # export RACK_ENV=${RACK_ENV:-"production"}
 # export_vars=$(cgroup-limits) ; export $export_vars
@@ -58,7 +55,7 @@ migrate_database
 # fi
 
 if is_passenger_installed; then
-  echo bundle exec passenger start --port 8080
+  exec bundle exec passenger start --port 8080
 else
   echo 'No passenger... nothing to do'
 fi
