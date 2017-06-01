@@ -30,9 +30,10 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
 
-# Install nss-wrapper from unstable.
-COPY apt/unstable.pref /etc/apt/preferences.d/unstable.pref
-COPY apt/unstable.list /etc/apt/sources.list.d/unstable.list
+# # Install nss-wrapper from unstable.
+# COPY apt/unstable.pref /etc/apt/preferences.d/unstable.pref
+# COPY apt/unstable.list /etc/apt/sources.list.d/unstable.list
+# && apt-get install -y -t unstable libnss-wrapper \
 
 # Install updated nodejs, yarn and build packages
 # RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
@@ -42,7 +43,6 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update -qq \
-  && apt-get install -y -t unstable libnss-wrapper \
   && apt-get install -y \
   build-essential \
   libxslt1-dev \
@@ -58,7 +58,19 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   rsync \
   # duck \
   lsb-release \
-  yarn
+  yarn \
+  cmake
+
+# build nss_wrapper
+RUN git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper && \
+    cd /tmp/nss_wrapper && \
+    git checkout nss_wrapper-1.1.3 && \
+    mkdir /tmp/nss_wrapper/build && \
+    cd /tmp/nss_wrapper/build && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. && \
+    make && \
+    make install && \
+    rm -rf /tmp/nss_wrapper
 
 # For passenger:
   # && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7 \
