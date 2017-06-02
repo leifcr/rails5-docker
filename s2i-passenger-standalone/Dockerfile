@@ -21,6 +21,7 @@ ENV APP_HOME=/app \
     LANG=C.UTF-8 \
     RAILS_ENV=production \
     APP_USER=rails
+    APP_USER_UID=1010
 
 # ENV PATH=/app/bin:$PATH
 
@@ -59,6 +60,8 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   # duck \
   lsb-release \
   yarn \
+  nano \
+  vim \
   cmake
 
 # build nss_wrapper
@@ -102,9 +105,9 @@ RUN git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper && \
 # Create application folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app folder
-RUN groupadd -g 1010 $APP_USER && \
-    useradd --uid 1010 -s /bin/bash -m -d $APP_HOME -g 1010 -G root $APP_USER && \
-    chown 1010:0 $APP_HOME && \
+RUN groupadd -g $APP_USER_UID $APP_USER && \
+    useradd --uid $APP_USER_UID -s /bin/bash -m -d $APP_HOME -g $APP_USER_UID -G root $APP_USER && \
+    chown $APP_USER_UID:0 $APP_HOME && \
     chmod 775 $APP_HOME && \
     chmod g+s $APP_HOME && \
     mkdir -p $APP_HOME/.ssh/ && \
@@ -112,7 +115,7 @@ RUN groupadd -g 1010 $APP_USER && \
     touch $APP_HOME/.ssh/known_hosts && \
     ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts && \
     ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts && \
-    chown -R 1010:0 /usr/local/bundle && \
+    chown -R $APP_USER_UID:0 /usr/local/bundle && \
     chmod 775 /usr/local/bundle && \
     chmod g+s /usr/local/bundle
 
@@ -148,8 +151,8 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
 
-RUN chown -R 1010:0 $APP_HOME && \
-    chown -R 1010:0 /usr/local/bundle && \
+RUN chown -R $APP_USER_UID:0 $APP_HOME && \
+    chown -R $APP_USER_UID:0 /usr/local/bundle && \
     /usr/local/bin/fix-permissions /usr/local/bundle && \
     /usr/local/bin/fix-permissions $APP_HOME && \
     chmod 700 $APP_HOME/.ssh

@@ -18,6 +18,8 @@ function is_foreman_installed() {
 
 set -e
 
+source /usr/local/bin/nss_wrapper_src
+
 # function check_number() {
 #   if [[ ! "$2" =~ ^[0-9]+$ ]]; then
 #     echo "$1 needs to be a non-negative number"
@@ -55,6 +57,9 @@ fi
 # fi
 
 if is_passenger_installed; then
+  # Fetch the user id from docker run so that we can substitute it in
+  echo whoami: $(whoami)
+  echo id: $(id)
   exec bundle exec passenger start --port 8080
 else
   echo 'No passenger... nothing to do'
