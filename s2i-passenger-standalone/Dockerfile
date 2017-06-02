@@ -20,7 +20,7 @@ ENV APP_HOME=/app \
     RUBY_VERSION=2.4 \
     LANG=C.UTF-8 \
     RAILS_ENV=production \
-    APP_USER=rails
+    APP_USER=rails \
     APP_USER_UID=1010
 
 # ENV PATH=/app/bin:$PATH
