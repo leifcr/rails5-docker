@@ -1,2 +1,2 @@
 #!bin/bash
-source /usr/local/bin/nss_wrapper_src
+source /usr/local/bin/s2i/nss_wrapper_src

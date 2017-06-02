@@ -18,7 +18,7 @@ function is_foreman_installed() {
 
 set -e
 
-source /usr/local/bin/nss_wrapper_src
+source /usr/local/bin/s2i/nss_wrapper_src
 
 # function check_number() {
 #   if [[ ! "$2" =~ ^[0-9]+$ ]]; then
