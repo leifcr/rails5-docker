@@ -56,11 +56,15 @@ fi
 #   echo 'No foreman, no puma and no passenger... nothing to do'
 # fi
 
-if is_passenger_installed; then
+if is_foreman_installed; then
+  echo whoami: $(whoami)
+  echo id: $(id)
+  exec bundle exec foreman start
+elif is_passenger_installed; then
   # Fetch the user id from docker run so that we can substitute it in
   echo whoami: $(whoami)
   echo id: $(id)
   exec bundle exec passenger start --port 8080
 else
-  echo 'No passenger... nothing to do'
+  echo 'No passenger or foreman... nothing to do'
 fi
