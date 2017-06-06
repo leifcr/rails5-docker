@@ -57,11 +57,13 @@ fi
 # fi
 
 if is_foreman_installed; then
+  echo "------ Starting foreman ------"
   echo whoami: $(whoami)
   echo id: $(id)
   exec bundle exec foreman start
 elif is_passenger_installed; then
   # Fetch the user id from docker run so that we can substitute it in
+  echo "------ Starting passenger (without foreman) ------"
   echo whoami: $(whoami)
   echo id: $(id)
   exec bundle exec passenger start --port 8080
