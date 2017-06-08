@@ -119,22 +119,6 @@ RUN groupadd -g $APP_USER_UID $APP_USER && \
     chmod 775 /usr/local/bundle && \
     chmod g+s /usr/local/bundle
 
-# COPY rails/* /usr/local/bin/
-
-# Make entrypoint executable when building on Windows
-# And backwards compatible entrypoint
-# RUN chmod +x /usr/local/bin/start.sh \
-#   && ln -s /usr/local/bin/start.sh /start.sh \
-#   && chmod +x /usr/local/bin/migrate-database.sh \
-#   && ln -s /usr/local/bin/migrate-database.sh /migrate-database.sh
-
-# Copy docker entry point
-# COPY docker-entrypoint.sh /usr/local/bin/
-
-# Make entrypoint executable when building on Windows
-# And backwards compatible entrypoint
-# RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
-
 # Copy contrib
 COPY ./contrib/ $APP_HOME
 
@@ -148,8 +132,12 @@ WORKDIR $APP_HOME
 # Copy app
 # COPY . ./
 # Install gems (Base gems used for most apps to save deployment time)
+# Add yarn and gemfiles
+# COPY Gemfile Gemfile.lock package.json yarn.lock ./
+# Add yarn files
+# COPY package.json yarn.lock ./
 # Add Gemfile
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+COPY Gemfile Gemfile.lock ./
 
 RUN chown -R $APP_USER_UID:0 $APP_HOME && \
     chown -R $APP_USER_UID:0 /usr/local/bundle && \
@@ -160,10 +148,14 @@ RUN chown -R $APP_USER_UID:0 $APP_HOME && \
 # Continue as rails user
 USER 1010
 
-# Install gems
+# Install gems and yarn/node_modules
+# RUN gem install bundler && \
+#     bundle install --deployment --jobs 20 --retry 5 && \
+#     yarn install
+
+# Install only gems
 RUN gem install bundler && \
-    bundle install --deployment --jobs 20 --retry 5 && \
-    yarn install
+    bundle install --deployment --jobs 20 --retry 5
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]

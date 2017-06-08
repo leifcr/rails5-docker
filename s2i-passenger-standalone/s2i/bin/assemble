@@ -43,6 +43,7 @@ if [[ "$RAILS_ENV" == "production" || "$RACK_ENV" == "production" ]]; then
   pushd $APP_HOME
   echo "---> Starting asset compilation ..."
   bundle exec rails assets:precompile
+  rm -rf ./node_modules
   popd
 fi
 
@@ -55,6 +56,8 @@ fi
 # The ./db folder has to be writeable as well because when Rails complete the
 # migration it writes the schema version into ./db/schema.db
 set +e
-'[[ -d $APP_HOME/tmp ]] && chgrp -R 0 $APP_HOME/tmp && chmod -R g+rw $APP_HOME/tmp'
-'[[ -d $APP_HOME/db ]] && chgrp -R 0 $APP_HOME/db && chmod -R g+rw $APP_HOME/db'
+pushd $APP_HOME
+'[[ -d ./tmp ]] && chgrp -R 0 ./tmp && chmod -R g+rw ./tmp'
+'[[ -d ./db ]]  && chgrp -R 0 ./db && chmod -R g+rw  ./db'
+popd
 set -e
