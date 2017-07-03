@@ -26,8 +26,8 @@ ENV APP_HOME=/app \
 # ENV PATH=/app/bin:$PATH
 
 # Add https transport to apt
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
-    && apt-get update -qq && apt-get install -y apt-transport-https apt-utils ca-certificates
+# RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
+    # && apt-get update -qq && apt-get install -y apt-transport-https apt-utils ca-certificates
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
 
@@ -38,42 +38,50 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 # Install updated nodejs, yarn and build packages
 # RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
-RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
+  && apt-get update -qq && apt-get install -y apt-transport-https apt-utils ca-certificates \
+  && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
   && echo "deb https://deb.nodesource.com/node_7.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
   && echo "deb-src https://deb.nodesource.com/node_7.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update -qq \
-  && apt-get install -y \
-  build-essential \
-  libxslt1-dev \
-  libxml2-dev \
-  libmysqlclient-dev \
-  mysql-client \
-  libpq-dev \
-  postgresql-client \
-  wget \
-  nodejs \
-  tar \
-  unzip \
-  rsync \
-  # duck \
-  lsb-release \
-  yarn \
-  nano \
-  vim \
-  cmake
+  && apt-get install -y build-essential libxslt1-dev libxml2-dev libmysqlclient-dev mysql-client libpq-dev postgresql-client wget nodejs tar unzip rsync lsb-release yarn nano vim cmake \
+  # && apt-get install -y duck \
+  && git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper \
+  && cd /tmp/nss_wrapper \
+  && git checkout nss_wrapper-1.1.3 \
+  && mkdir /tmp/nss_wrapper/build \
+  && cd /tmp/nss_wrapper/build \
+  && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. \
+  && make \
+  && make install \
+  && rm -rf /tmp/nss_wrapper \
+  && groupadd -g $APP_USER_UID $APP_USER \
+  && useradd --uid $APP_USER_UID -s /bin/bash -m -d $APP_HOME -g $APP_USER_UID -G root $APP_USER \
+  && chown $APP_USER_UID:0 $APP_HOME \
+  && chmod 775 $APP_HOME \
+  && chmod g+s $APP_HOME \
+  && mkdir -p $APP_HOME/.ssh/ \
+  && chmod 700 $APP_HOME/.ssh \
+  && touch $APP_HOME/.ssh/known_hosts \
+  && ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts \
+  && ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts \
+  && chown -R $APP_USER_UID:0 /usr/local/bundle \
+  && chmod 775 /usr/local/bundle \
+  && chmod g+s /usr/local/bundle \
+  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# build nss_wrapper
-RUN git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper && \
-    cd /tmp/nss_wrapper && \
-    git checkout nss_wrapper-1.1.3 && \
-    mkdir /tmp/nss_wrapper/build && \
-    cd /tmp/nss_wrapper/build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. && \
-    make && \
-    make install && \
-    rm -rf /tmp/nss_wrapper
+# # build nss_wrapper
+# RUN git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper && \
+#     cd /tmp/nss_wrapper && \
+#     git checkout nss_wrapper-1.1.3 && \
+#     mkdir /tmp/nss_wrapper/build && \
+#     cd /tmp/nss_wrapper/build && \
+#     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. && \
+#     make && \
+#     make install && \
+#     rm -rf /tmp/nss_wrapper
 
 # For passenger:
   # && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7 \
@@ -105,19 +113,19 @@ RUN git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper && \
 # Create application folder
 # Setup rails user group and rails user
 # Set rails:rails as user on app folder
-RUN groupadd -g $APP_USER_UID $APP_USER && \
-    useradd --uid $APP_USER_UID -s /bin/bash -m -d $APP_HOME -g $APP_USER_UID -G root $APP_USER && \
-    chown $APP_USER_UID:0 $APP_HOME && \
-    chmod 775 $APP_HOME && \
-    chmod g+s $APP_HOME && \
-    mkdir -p $APP_HOME/.ssh/ && \
-    chmod 700 $APP_HOME/.ssh && \
-    touch $APP_HOME/.ssh/known_hosts && \
-    ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts && \
-    ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts && \
-    chown -R $APP_USER_UID:0 /usr/local/bundle && \
-    chmod 775 /usr/local/bundle && \
-    chmod g+s /usr/local/bundle
+# RUN groupadd -g $APP_USER_UID $APP_USER && \
+#     useradd --uid $APP_USER_UID -s /bin/bash -m -d $APP_HOME -g $APP_USER_UID -G root $APP_USER && \
+#     chown $APP_USER_UID:0 $APP_HOME && \
+#     chmod 775 $APP_HOME && \
+#     chmod g+s $APP_HOME && \
+#     mkdir -p $APP_HOME/.ssh/ && \
+#     chmod 700 $APP_HOME/.ssh && \
+#     touch $APP_HOME/.ssh/known_hosts && \
+#     ssh-keyscan bitbucket.org >> $APP_HOME/.ssh/known_hosts && \
+#     ssh-keyscan github.com >> $APP_HOME/.ssh/known_hosts && \
+#     chown -R $APP_USER_UID:0 /usr/local/bundle && \
+#     chmod 775 /usr/local/bundle && \
+#     chmod g+s /usr/local/bundle
 
 # Copy contrib
 COPY ./contrib/ $APP_HOME
@@ -139,11 +147,12 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock ./
 
-RUN chown -R $APP_USER_UID:0 $APP_HOME && \
-    chown -R $APP_USER_UID:0 /usr/local/bundle && \
-    /usr/local/bin/fix-permissions /usr/local/bundle && \
-    /usr/local/bin/fix-permissions $APP_HOME && \
-    chmod 700 $APP_HOME/.ssh
+RUN  chown -R $APP_USER_UID:0 $APP_HOME \
+  && chown -R $APP_USER_UID:0 /usr/local/bundle \
+  && /usr/local/bin/fix-permissions /usr/local/bundle \
+  && /usr/local/bin/fix-permissions $APP_HOME \
+  && chmod 700 $APP_HOME/.ssh \
+  && rm -rf /tmp/* /var/tmp/*
 
 # Continue as rails user
 USER 1010
@@ -154,8 +163,8 @@ USER 1010
 #     yarn install
 
 # Install only gems
-RUN gem install bundler && \
-    bundle install --deployment --jobs 20 --retry 5
+RUN  gem install bundler \
+  && bundle install --deployment --jobs 20 --retry 5
 
 ENTRYPOINT ["container-entrypoint"]
 # CMD ["usage"]
