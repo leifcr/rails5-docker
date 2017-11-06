@@ -37,7 +37,7 @@ gem 'redis', '~> 3.0'
 gem 'leifcr-gravtastic'
 
 # gem 'autoprefixer-rails'
-gem 'bootstrap', '>= 4.0.0.alpha6'
+gem 'bootstrap', '4.0.0.beta.2'
 # gem 'bootstrap-sass'
 # gem 'font-awesome-sass'
 
