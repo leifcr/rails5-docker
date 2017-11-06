@@ -30,7 +30,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 # For staging and production env, duck-cli must be installed to be able to download refile assets
 
 # Install updated nodejs, yarn and build packages
-# RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+# RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
   && echo "deb https://deb.nodesource.com/node_7.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
   && echo "deb-src https://deb.nodesource.com/node_7.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \

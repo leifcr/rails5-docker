@@ -160,5 +160,35 @@ group :development do
   gem 'listen', '~> 3.0.5'
 end
 
+group :test do
+  gem 'capybara'
+  gem 'database_cleaner'
+  # gem 'leifcr-capybara-screenshot'
+  gem 'capybara-screenshot'
+  gem 'shoulda-matchers'
+  gem 'timecop'
+
+  # Retry if phantomjs just blows up...
+  # gem 'rspec-retry'
+
+  # js drivers for capybara
+  # Use phantomjs through poltergeist
+  # gem 'poltergeist'
+
+  gem 'capybara-selenium'
+  gem 'chromedriver-helper'
+
+  # Alternative: change to https://github.com/elgalu/docker-selenium
+  # For using real chrome/ff browsers through selenium
+
+  # Coverage
+  # gem 'simplecov', require: false
+  # gem 'simplecov-rcov', require: false
+
+  # Notificiations sent to growl through gntp
+  gem 'ruby_gntp'
+end
+
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
