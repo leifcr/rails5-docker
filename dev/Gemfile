@@ -13,6 +13,8 @@ gem 'rails-i18n'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# gem 'sprockets'
+# gem 'uglifier'
 
 #
 gem 'turbolinks', '~> 5'
@@ -22,6 +24,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'mysql2'
 gem 'pg'
 
+# For simple search:
+gem 'ransack'
+
+gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
@@ -31,7 +37,7 @@ gem 'redis', '~> 3.0'
 gem 'leifcr-gravtastic'
 
 # gem 'autoprefixer-rails'
-gem 'bootstrap', '>= 4.0.0.alpha6'
+gem 'bootstrap', '4.0.0.beta.2'
 # gem 'bootstrap-sass'
 # gem 'font-awesome-sass'
 
@@ -42,14 +48,14 @@ gem 'sentry-raven'
 gem 'haml'
 gem 'haml-rails'
 
-group :production do
+group :production, :test do
   # gem 'puma', '~> 3.0'
-  gem 'passenger', '>= 5.1.0', require: 'phusion_passenger/rack_handler'
+  gem 'passenger', '>= 5.1.0  ', require: 'phusion_passenger/rack_handler'
 end
 
 gem 'simple_form', '~> 3.5'
 
-gem 'mini_magick'
+# gem 'mini_magick'
 
 # gem 'carrierwave'
 # gem 'carrierwave-i18n'
@@ -62,7 +68,7 @@ gem 'kaminari'
 
 # For nice tables in text emails
 # gem 'terminal-table'
-
+#
 # gem 'foundation_emails'
 # gem 'inky-rb', require: 'inky'
 
@@ -77,6 +83,8 @@ gem 'sweet-alert-confirm', github: 'mois3x/sweet-alert-rails-confirm'
 # gem 'momentjs-rails'
 
 gem 'sidekiq'
+# Unique jobs in non-enterprise sidekiq :)
+gem 'sidekiq-unique-jobs'
 
 # Delayed job does not work with rails 5.1...
 # gem 'delayed_job'
@@ -85,6 +93,11 @@ gem 'sidekiq'
 # gem 'wicked_pdf'
 # 0.12 version for all platforms
 # gem 'wkhtmltopdf-binary-edge'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platform: :mri
+end
 
 gem 'paper_trail'
 
@@ -104,3 +117,48 @@ gem 'her'
 gem 'enumerize'
 
 gem 'skylight'
+
+gem 'foreman'
+
+group :development do
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
+
+  # gem 'capistrano', require: false
+  # gem 'capistrano-db-tasks', require: false, github: 'leifcr/capistrano-db-tasks', tag: 'v0.4.1'
+  # # gem 'capistrano-delayed_job', require: false
+  # gem 'capistrano-monit_runit', require: false
+  # gem 'capistrano-pumaio', require: false
+  # gem 'capistrano-rails', require: false
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
+  # For reloading during devel
+  gem 'guard-bundler', require: false
+  gem 'guard-foreman' # , github: 'leifcr/guard-foreman', require: false
+  gem 'guard-livereload', require: false
+  # gem 'guard-rspec', require: false
+
+  gem 'leifcr-rack-livereload', require: 'rack-livereload'
+
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+
+  # Use thin, since it works better with better_errors and binding_of_caller (for now)
+  gem 'thin'
+
+  # Better ruby/rails console
+  gem 'pry-rails'
+  gem 'pry-toys'
+
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # Spring doesn't work well with docker_data folder...
+  # gem 'spring'
+  # gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'listen', '~> 3.0.5'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
