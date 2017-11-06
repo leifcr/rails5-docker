@@ -37,12 +37,12 @@ ENV APP_HOME=/app \
 # && apt-get install -y -t unstable libnss-wrapper \
 
 # Install updated nodejs, yarn and build packages
-# RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+# RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
   && apt-get update -qq && apt-get install -y apt-transport-https apt-utils ca-certificates \
   && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
-  && echo "deb https://deb.nodesource.com/node_7.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
-  && echo "deb-src https://deb.nodesource.com/node_7.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \
+  && echo "deb https://deb.nodesource.com/node_8.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
+  && echo "deb-src https://deb.nodesource.com/node_8.x jessie main" >> /etc/apt/sources.list.d/nodesource.list \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update -qq \
