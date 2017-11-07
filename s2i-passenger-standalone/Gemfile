@@ -63,9 +63,6 @@ gem 'simple_form', '~> 3.5'
 # pagination
 gem 'kaminari'
 
-# Use attributes as activerecord on models...
-gem 'active_model_attributes'
-
 # Inline css for emails, without the hassle:
 # gem 'premailer-rails'
 
