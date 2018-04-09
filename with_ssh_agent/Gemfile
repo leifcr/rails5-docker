@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.0.7'
+gem 'rails', '~> 5.1.6'
 
 gem 'sprockets'
 # gem 'sprockets-es6', require: 'sprockets/es6'
@@ -76,7 +76,9 @@ gem 'gon'
 gem 'statesman'
 
 # For unique id's on orders, carts etc, since integers can be easily found
-gem 'activeuuid'
+# gem 'activeuuid'
+# Use this instead for uuid
+gem 'mysql-binuuid-rails'
 
 # CSP setup/reporting
 gem 'secure_headers'
