@@ -1,5 +1,5 @@
 {
-  "name": "sym_books",
+  "name": "dev-rails5",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "^3.2.0",
