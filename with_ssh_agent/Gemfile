@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.1.6'
 
 gem 'sprockets'
-# gem 'sprockets-es6', require: 'sprockets/es6'
+gem 'sprockets-es6', require: 'sprockets/es6'
 
 gem 'responders' # See https://github.com/plataformatec/responders
 
@@ -176,6 +176,7 @@ gem 'friendly_id'
 gem 'momentjs-rails'
 
 gem 'hashie' # used by content on json data
+gem 'hashie-forbidden_attributes' # To fix strong params issue
 # Alternative: use virtus models instead of hashie serialized cols
 # gem 'virtus'
 
@@ -302,7 +303,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-loadcss'
   gem 'rails-assets-pnotify'
   gem 'rails-assets-select2'
-  gem 'rails-assets-slick-carousel'
+  gem 'rails-assets-slick-carousel', '1.7.1'
   # Update to either limonte/sweetalert2 or newer sweetalert. (Depending in sweetalert-confirm)
   gem 'rails-assets-sweetalert', '~> 1.1.3'
   gem 'rails-assets-underscore'
