@@ -153,6 +153,7 @@ group :test do
 
   gem 'capybara-selenium'
   gem 'chromedriver-helper'
+  gem 'rails-controller-testing'
 
   # Alternative: change to https://github.com/elgalu/docker-selenium
   # For using real chrome/ff browsers through sxelenium
