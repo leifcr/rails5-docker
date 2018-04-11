@@ -77,8 +77,10 @@ gem 'statesman'
 
 # For unique id's on orders, carts etc, since integers can be easily found
 # gem 'activeuuid'
+gem 'leifcr-activeuuid', require: 'activeuuid'
 # Use this instead for uuid
-gem 'mysql-binuuid-rails'
+# gem 'mysql-binuuid-rails'
+# gem 'uuidtools'
 
 # CSP setup/reporting
 gem 'secure_headers'
@@ -144,8 +146,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
 
-  # Incompatible with capybara > 3. wait for new release
-  # gem 'capybara-screenshot'
+  gem 'capybara-screenshot'
 
   gem 'shoulda-matchers'
   gem 'timecop'
