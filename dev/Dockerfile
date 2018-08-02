@@ -56,7 +56,7 @@ COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
 RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
 # Disable skylight dev warning
-RUN skylight disable_dev_warning
+RUN bundle exec skylight disable_dev_warning
 
 # Set entry point to bundle exec, as all cmd's with rails should be prepended
 ENTRYPOINT ["docker-entrypoint.sh"]
