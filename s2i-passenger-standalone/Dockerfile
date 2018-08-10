@@ -1,4 +1,4 @@
-FROM ruby:2.4
+FROM ruby:2.5
 
 LABEL maintainer leifcr@gmail.com
       # Location of the STI scripts inside the image.

@@ -1,4 +1,4 @@
-FROM ruby:2.4
+FROM ruby:2.5
 MAINTAINER leifcr@gmail.com
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
