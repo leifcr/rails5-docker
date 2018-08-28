@@ -153,6 +153,10 @@ group :test do
 
   gem 'capybara-selenium'
   gem 'chromedriver-helper'
+  
+  # For testing on Firefox headless
+  # gem 'geckodriver-helper'
+
   gem 'rails-controller-testing'
 
   # Alternative: change to https://github.com/elgalu/docker-selenium
@@ -195,7 +199,7 @@ gem 'facets', require: false
 gem 'valid_email2'
 
 # Froala editor
-gem 'wysiwyg-rails', '2.5.1' # , '2.3.3'
+gem 'wysiwyg-rails', '2.8.4' # '2.5.1' # , '2.3.3'
 
 gem 'codemirror-rails'
 
