@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 
 # I18n rails translations :)
 gem 'rails-i18n'
@@ -32,12 +32,12 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.3'
 
 gem 'leifcr-gravtastic'
 
 # gem 'autoprefixer-rails'
-gem 'bootstrap', '4.0.0.beta.2'
+gem 'bootstrap', '4.1.3'
 # gem 'bootstrap-sass'
 # gem 'font-awesome-sass'
 
@@ -53,7 +53,7 @@ group :production, :test do
   gem 'passenger', '>= 5.1.0  ', require: 'phusion_passenger/rack_handler'
 end
 
-gem 'simple_form', '~> 3.5'
+gem 'simple_form', '~> 4.0'
 
 # gem 'mini_magick'
 
@@ -157,37 +157,37 @@ group :development do
   # gem 'spring'
   # gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.0'
 end
 
-group :test do
-  gem 'capybara'
-  gem 'database_cleaner'
-  # gem 'leifcr-capybara-screenshot'
-  gem 'capybara-screenshot'
-  gem 'shoulda-matchers'
-  gem 'timecop'
+# group :test do
+#   gem 'capybara'
+#   gem 'database_cleaner'
+#   # gem 'leifcr-capybara-screenshot'
+#   gem 'capybara-screenshot'
+#   gem 'shoulda-matchers'
+#   gem 'timecop'
 
-  # Retry if phantomjs just blows up...
-  # gem 'rspec-retry'
+#   # Retry if phantomjs just blows up...
+#   # gem 'rspec-retry'
 
-  # js drivers for capybara
-  # Use phantomjs through poltergeist
-  # gem 'poltergeist'
+#   # js drivers for capybara
+#   # Use phantomjs through poltergeist
+#   # gem 'poltergeist'
 
-  gem 'capybara-selenium'
-  gem 'chromedriver-helper'
+#   gem 'capybara-selenium'
+#   gem 'chromedriver-helper'
 
-  # Alternative: change to https://github.com/elgalu/docker-selenium
-  # For using real chrome/ff browsers through selenium
+#   # Alternative: change to https://github.com/elgalu/docker-selenium
+#   # For using real chrome/ff browsers through selenium
 
-  # Coverage
-  # gem 'simplecov', require: false
-  # gem 'simplecov-rcov', require: false
+#   # Coverage
+#   # gem 'simplecov', require: false
+#   # gem 'simplecov-rcov', require: false
 
-  # Notificiations sent to growl through gntp
-  gem 'ruby_gntp'
-end
+#   # Notificiations sent to growl through gntp
+#   gem 'ruby_gntp'
+# end
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
