@@ -14,7 +14,7 @@ gem 'bootsnap'
 gem 'rails-i18n'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails', '~> 1.3'
 # gem 'sprockets'
 # gem 'uglifier'
 
