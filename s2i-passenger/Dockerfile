@@ -37,7 +37,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   build-essential \
   libxslt1-dev \
   libxml2-dev \
-  # libmysqlclient-dev \
+  default-libmysqlclient-dev \
   # mysql-client \
   libpq-dev \
   postgresql-client \

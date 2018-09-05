@@ -40,7 +40,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
   build-essential \
   libxslt1-dev \
   libxml2-dev \
-  libmysqlclient-dev \
+  default-libmysqlclient-dev \
   mysql-client \
   libpq-dev \
   postgresql-client \
