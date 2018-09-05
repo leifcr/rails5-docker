@@ -46,7 +46,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update -qq \
-  && apt-get install -y build-essential libxslt1-dev libxml2-dev libmysqlclient-dev mysql-client libpq-dev postgresql-client wget nodejs tar unzip rsync lsb-release yarn nano vim cmake \
+  && apt-get install -y build-essential libxslt1-dev libxml2-dev libpq-dev postgresql-client wget nodejs tar unzip rsync lsb-release yarn nano vim cmake \
   # && apt-get install -y duck \
   && git clone git://git.samba.org/nss_wrapper.git /tmp/nss_wrapper \
   && cd /tmp/nss_wrapper \
