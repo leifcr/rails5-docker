@@ -65,14 +65,14 @@ gem 'simple_form', '~> 4.0'
 # pagination
 gem 'kaminari'
 
-# Inline css for emails, without the hassle:
-# gem 'premailer-rails'
+# For inlining css on emails (gmail + others remove css styles...)
+gem 'inky-rb', require: 'inky'
+gem 'premailer-rails'
 
-# For nice tables in text emails
-# gem 'terminal-table'
-#
-# gem 'foundation_emails'
-# gem 'inky-rb', require: 'inky'
+gem 'terminal-table'
+
+# For truncating/word_wrapping tables. (Facets has a lot of ruby extension goodies...)
+gem 'facets', require: false
 
 # For validating email addresses
 gem 'valid_email2'
