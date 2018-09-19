@@ -24,7 +24,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
        wget \
        curl \
        nodejs \
-       yarn \ 
+       yarn \
     && apt-get install -y google-chrome-stable --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,7 +52,7 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
-RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install
+RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install && chromedriver-update
 # Disable skylight dev warning
 RUN bundle exec skylight disable_dev_warning
 
