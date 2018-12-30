@@ -14,7 +14,7 @@ gem 'bootsnap'
 gem 'rails-i18n'
 
 # Use SCSS for stylesheets
-gem 'sassc-rails', '~> 1.3'
+gem 'sassc-rails'
 # gem 'sprockets'
 # gem 'uglifier'
 
@@ -34,12 +34,12 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 3.3'
+gem 'redis', '~> 4.0'
 
 gem 'leifcr-gravtastic'
 
 # gem 'autoprefixer-rails'
-gem 'bootstrap', '4.1.3'
+gem 'bootstrap', '4.2.1'
 # gem 'bootstrap-sass'
 # gem 'font-awesome-sass'
 
@@ -118,7 +118,7 @@ gem 'her'
 # For address types and invoice states
 gem 'enumerize'
 
-gem 'skylight'
+# gem 'skylight'
 
 gem 'foreman'
 
