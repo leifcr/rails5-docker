@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.6
 MAINTAINER leifcr@gmail.com
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
@@ -24,7 +24,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
        wget \
        curl \
        nodejs \
-       yarn \ 
+       yarn \
     && apt-get install -y google-chrome-stable --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,6 +53,4 @@ WORKDIR $APP_HOME
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # Install gems
 RUN gem install bundler && bundle install --jobs 20 --retry 5 && yarn install && chromedriver-update
-# Disable skylight dev warning
-RUN bundle exec skylight disable_dev_warning
 
