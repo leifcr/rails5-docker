@@ -1,3 +1,0 @@
-Package: libnss-wrapper
-Pin: release a=unstable
-Pin-Priority: 50
