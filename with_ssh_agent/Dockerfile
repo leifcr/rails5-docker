@@ -50,9 +50,9 @@ USER rails
 WORKDIR $APP_HOME
 
 # Add Gemfile
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+COPY Gemfile Gemfile.lock ./
 # Install gems
-RUN gem install bundler --version 1.17.3 && bundle install --jobs 20 --retry 5 && yarn install && chromedriver-update
+RUN gem install bundler --version 1.17.3 && bundle install --jobs 20 --retry 5 && chromedriver-update
 
 # Set entry point to bundle exec, as all cmd's with rails should be prepended
 ENTRYPOINT ["docker-entrypoint.sh"]
