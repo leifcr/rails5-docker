@@ -46,7 +46,7 @@ gem 'bootstrap'
 gem 'font-awesome-sass', '~> 5.8'
 gem 'sassc-rails' #, '~> 5.0'
 
-gem 'mini_magick'
+gem "mini_magick", ">= 4.9.4"
 
 gem 'fog-aws' # , require: false
 # gem 'fog-rackspace' # , require: false
@@ -230,7 +230,8 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
 
-  gem 'nokogiri' # Needed for data-import.
+  gem "nokogiri", ">= 1.10.4"
+
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
