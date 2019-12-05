@@ -21,11 +21,6 @@ gem 'rails-i18n'
 # kaminari must be before elasticsearch to work with es
 gem 'kaminari'
 
-gem 'elasticsearch', '~> 6.0'
-gem 'elasticsearch-rails', '~> 6.0'
-gem 'elasticsearch-model', '~> 6.0' # rubocop:disable Bundler/OrderedGems
-gem 'elasticsearch-dsl' # rubocop:disable Bundler/OrderedGems
-
 # Nice progressbar to use in rake tasks
 gem 'ruby-progressbar', require: false
 
@@ -102,11 +97,9 @@ end
 # gem 'delayed_job_active_record'
 
 gem 'sidekiq'
-gem 'sidekiq_alive', git: 'https://github.com/leifcr/sidekiq_alive.git', tag: 'v1.1.5'
-# gem 'sidekiq_alive', git: 'https://github.com/leifcr/sidekiq_alive.git', branch: 'testing_stuff'
 
 # Forms
-gem 'simple_form', '~> 4.0'
+gem 'simple_form'
 gem 'country_select' # rubocop:disable Bundler/OrderedGems - countries must be after country_select
 gem 'countries' # rubocop:disable Bundler/OrderedGems
 
