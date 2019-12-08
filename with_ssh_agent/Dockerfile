@@ -20,7 +20,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
        libxml2-dev \
        libxslt1-dev \
        ghostscript \
-       mysql-client \
+       default-mysql-client \
        wget \
        curl \
        nodejs \

@@ -16,7 +16,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   default-libmysqlclient-dev \
   libxml2-dev \
   libxslt1-dev \
-  mysql-client \
+  default-mysql-client \
   wget \
   nodejs \
   yarn \
