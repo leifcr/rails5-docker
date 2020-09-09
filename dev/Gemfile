@@ -4,7 +4,7 @@ gem 'bootsnap', require: false
 gem 'rails', '~> 5.2.0'
 
 # Lock to 1.0.4 until rails 5.2.4 is released, or upgrade to 6.0
-gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'rails-html-sanitizer'
 
 # Better logging
 gem 'lograge'
@@ -70,7 +70,7 @@ gem 'mysql-binuuid-rails'
 
 # Asset precompilation
 # Using webpacker for js
-gem 'webpacker', '~> 4.0'
+gem 'webpacker'
 
 # Add if asset js is used instead of webpacker
 # gem 'uglifier', '>= 1.3.0'
