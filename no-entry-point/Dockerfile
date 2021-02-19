@@ -1,4 +1,4 @@
-FROM ruby:2.6
+FROM ruby:2.7
 MAINTAINER leifcr@gmail.com
 
 # For staging and production env, duck-cli must be installed to be able to download refile assets
@@ -52,5 +52,5 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock ./
 # Install gems
-RUN gem install bundler --version 1.17.3 && bundle install --jobs 20 --retry 5 && chromedriver-update
+RUN gem install bundler && bundle install --jobs 20 --retry 5 && chromedriver-update
 

@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.7
 MAINTAINER leifcr@gmail.com
 
 # Add https transport to apt
@@ -74,7 +74,7 @@ WORKDIR $APP_HOME
 # Add Gemfile
 COPY Gemfile Gemfile.lock ./
 # Install gems
-RUN gem install bundler --version 1.17.3 && bundle install --deployment --without development:test --jobs 20 --retry 5
+RUN gem install bundler && bundle install --jobs 20 --retry 5 --without development:test
 
 # Set entry point to bundle exec, as all cmd's with rails should be prepended
 ENTRYPOINT ["docker-entrypoint.sh"]
